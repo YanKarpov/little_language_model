@@ -1,21 +1,16 @@
 import os
-
-from transformers import Trainer, TrainingArguments
-from transformers import AutoTokenizer, AutoModelForSequenceClassification
+import json
+from transformers import Trainer, TrainingArguments, AutoTokenizer, AutoModelForSequenceClassification
 import torch
 
 tokenizer = AutoTokenizer.from_pretrained('bert-base-uncased')
 model = AutoModelForSequenceClassification.from_pretrained('bert-base-uncased')
 
-train_texts = [
-    "I love machine learning.",
-    "Transformers are amazing!",
-    "I don't like the new update.",
-    "Natural language processing is fascinating."
-]
+with open('train_data.json', 'r') as f:
+    data = json.load(f)
 
-train_labels = [1, 1, 0, 1]  # 假设1代表正面情感，0代表负面情感
-
+train_texts = data['texts']
+train_labels = data['labels']
 
 class CustomDataset(torch.utils.data.Dataset):
     def __init__(self, encodings, labels):
@@ -30,22 +25,22 @@ class CustomDataset(torch.utils.data.Dataset):
     def __len__(self):
         return len(self.labels)
 
-
 train_encodings = tokenizer(train_texts, truncation=True, padding=True)
 train_dataset = CustomDataset(train_encodings, train_labels)
 
-current_file_path = os.path.abspath(__file__)
+output_dir = './results'
 
-current_file_name = os.path.basename(current_file_path)
+os.makedirs(output_dir, exist_ok=True)
+
 
 training_args = TrainingArguments(
-    output_dir='./results'+current_file_name,
+    output_dir=output_dir,
     num_train_epochs=3,
     per_device_train_batch_size=8,
     per_device_eval_batch_size=8,
     warmup_steps=500,
     weight_decay=0.01,
-    logging_dir='./logs'+current_file_name,
+    save_strategy="epoch"  
 )
 
 trainer = Trainer(
@@ -55,3 +50,7 @@ trainer = Trainer(
 )
 
 trainer.train()
+model.save_pretrained(output_dir)
+tokenizer.save_pretrained(output_dir)
+
+print(f"Model and tokenizer saved to {output_dir}")

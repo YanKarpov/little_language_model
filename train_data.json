@@ -1,0 +1,25 @@
+{
+    "texts": [
+        "I love machine learning.",
+        "Transformers are amazing!",
+        "I don't like the new update.",
+        "Natural language processing is fascinating.",
+        "The new feature is so helpful!",
+        "I hate how slow the system is now.",
+        "Data science is the future of technology.",
+        "The interface is too complicated and frustrating.",
+        "AI will revolutionize many industries.",
+        "This app crashes way too often.",
+        "I really enjoy learning new programming languages.",
+        "The customer service was really bad.",
+        "The latest algorithm update made the system faster.",
+        "I am tired of constant bugs in the software.",
+        "The documentation is clear and easy to follow.",
+        "The user experience needs a lot of improvement.",
+        "I'm excited about the potential of quantum computing.",
+        "This product has too many issues to be useful.",
+        "The training process was smooth and efficient.",
+        "The model predictions are very inaccurate."
+    ],
+    "labels": [1, 1, 0, 1, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0]
+}
